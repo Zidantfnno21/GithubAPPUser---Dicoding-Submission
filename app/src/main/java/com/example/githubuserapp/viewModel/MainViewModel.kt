@@ -126,7 +126,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun giHubGetFollowing(username : String){
-        _isLoading.value = false
+        _isLoading.value = true
         val client = ApiConfig.getApiService().getFollowing(username)
         client.enqueue(object : Callback<List<ItemsItem>>{
             override fun onResponse(

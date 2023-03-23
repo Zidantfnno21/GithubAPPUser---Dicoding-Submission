@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".DetailActivity"
+            android:label="Detail User"
             android:exported="false"
             android:parentActivityName=".MainActivity">
             <meta-data

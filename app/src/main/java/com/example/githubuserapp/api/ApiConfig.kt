@@ -17,11 +17,10 @@ class ApiConfig {
                     HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
                 }
             val authInterceptor = Interceptor{ chain ->
-                val req = chain.request()
-                val requestHeaders = req.newBuilder()
-                    .addHeader("Authorization", "token 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")
+                val req = chain.request().newBuilder()
+                    .addHeader("Authorization", "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")
                     .build()
-                chain.proceed(requestHeaders)
+                chain.proceed(req)
             }
             val client = OkHttpClient.Builder()
                 .addInterceptor(authInterceptor)

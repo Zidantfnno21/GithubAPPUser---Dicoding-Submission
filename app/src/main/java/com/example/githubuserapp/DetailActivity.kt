@@ -58,7 +58,7 @@ class DetailActivity : AppCompatActivity() {
     private fun detailUsers(username : String) {
         mainViewModel.gitHubDetailUser(username)
         mainViewModel.detailDataUsers.observe(this) { DetailUserResponse ->
-            activityDetailBinding.tvDetailId.text = DetailUserResponse.id.toString()
+            activityDetailBinding.tvDetailId.text = DetailUserResponse.name
             activityDetailBinding.tvDetailUsername.text = DetailUserResponse.login
             Glide.with(this)
                 .load(DetailUserResponse.avatarUrl)

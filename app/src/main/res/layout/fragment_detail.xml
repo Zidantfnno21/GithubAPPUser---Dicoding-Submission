@@ -14,4 +14,17 @@
         android:layout_height="wrap_content"
         tools:listitem="@layout/user_item" />
 
+    <ProgressBar
+        android:id="@+id/progressBarDetail"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="128dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:contextClickable="false"
+        android:indeterminate="true"
+        android:indeterminateBehavior="cycle"
+        android:indeterminateTint="@color/md_theme_light_onPrimaryContainer"
+        android:visibility="invisible" />
+
+
 </FrameLayout>

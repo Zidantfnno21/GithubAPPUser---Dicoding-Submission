@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +19,7 @@ class DetailFragment : Fragment() {
 
     private lateinit var mainViewModel : MainViewModel
     private lateinit var recyclerView : RecyclerView
+    private lateinit var progressBar : ProgressBar
 
     override fun onCreateView(
         inflater : LayoutInflater , container : ViewGroup? ,
@@ -27,6 +29,7 @@ class DetailFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
         recyclerView = view.findViewById(R.id.rvDetail)
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        progressBar = view.findViewById(R.id.progressBarDetail)
 
         return view
     }
@@ -54,6 +57,10 @@ class DetailFragment : Fragment() {
             mainViewModel.listFollowers.observe(viewLifecycleOwner) { listFollowers ->
                 setUserFollowers(listFollowers)
             }
+        }
+
+        mainViewModel.isLoading.observe(viewLifecycleOwner){
+            isLoading(it)
         }
 
         mainViewModel.isNotFound.observe(viewLifecycleOwner){
@@ -89,5 +96,9 @@ class DetailFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun isLoading(loading: Boolean) {
+            progressBar.visibility = if(loading) View.VISIBLE else View.GONE
     }
 }
