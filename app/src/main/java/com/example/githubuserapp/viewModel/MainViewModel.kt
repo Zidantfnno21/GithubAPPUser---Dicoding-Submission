@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.githubuserapp.Event
 import com.example.githubuserapp.api.ApiConfig
-import com.example.githubuserapp.dataModel.DetailUserResponse
-import com.example.githubuserapp.dataModel.GithubResponse
-import com.example.githubuserapp.dataModel.ItemsItem
+import com.example.githubuserapp.model.DetailUserResponse
+import com.example.githubuserapp.model.GithubResponse
+import com.example.githubuserapp.model.ItemsItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

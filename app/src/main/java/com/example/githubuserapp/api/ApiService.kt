@@ -1,11 +1,10 @@
 package com.example.githubuserapp.api
 
-import com.example.githubuserapp.dataModel.DetailUserResponse
-import com.example.githubuserapp.dataModel.GithubResponse
-import com.example.githubuserapp.dataModel.ItemsItem
+import com.example.githubuserapp.model.DetailUserResponse
+import com.example.githubuserapp.model.GithubResponse
+import com.example.githubuserapp.model.ItemsItem
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 

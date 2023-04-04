@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubuserapp.R
-import com.example.githubuserapp.dataModel.ItemsItem
+import com.example.githubuserapp.model.ItemsItem
 
 class MainAdapterUser(private val userData : List<ItemsItem>) : RecyclerView.Adapter<MainAdapterUser.ViewHolder>(){
     private lateinit var onItemClickCallback: OnItemClickCallback

@@ -13,4 +13,6 @@
     <string name="following">Following</string>
     <string name="number_follower">%d Follower</string>
     <string name="number_following">%d Following</string>
+    <string name="favorite">Favorite</string>
+    <string name="share">Share</string>
 </resources>
