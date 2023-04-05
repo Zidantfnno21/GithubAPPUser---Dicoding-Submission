@@ -1,4 +1,4 @@
-package com.example.githubuserapp.api
+package com.example.githubuserapp.data.remote.api
 
 import com.example.githubuserapp.BuildConfig
 import okhttp3.Interceptor

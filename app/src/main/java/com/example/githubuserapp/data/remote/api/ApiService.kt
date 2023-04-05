@@ -1,4 +1,4 @@
-package com.example.githubuserapp.api
+package com.example.githubuserapp.data.remote.api
 
 import com.example.githubuserapp.model.DetailUserResponse
 import com.example.githubuserapp.model.GithubResponse

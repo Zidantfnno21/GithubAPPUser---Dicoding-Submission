@@ -13,6 +13,9 @@
     <string name="following">Following</string>
     <string name="number_follower">%d Follower</string>
     <string name="number_following">%d Following</string>
-    <string name="favorite">Favorite</string>
+    <string name="favorite">  Add to Favorite  </string>
     <string name="share">Share</string>
+    <string name="theme_setting">Theme Settings</string>
+    <string name="your_favorite">Your Favorite</string>
+    <string name="share_users">Share Users</string>
 </resources>

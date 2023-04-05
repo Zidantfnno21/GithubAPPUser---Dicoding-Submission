@@ -1,4 +1,4 @@
-package com.example.githubuserapp
+package com.example.githubuserapp.view
 
 import android.app.SearchManager
 import android.content.Intent
@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubuserapp.R
 import com.example.githubuserapp.adapter.MainAdapterUser
 import com.example.githubuserapp.model.ItemsItem
 import com.example.githubuserapp.databinding.ActivityMainBinding
@@ -61,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        mainViewModel.isOpening.observe(this,){
+        mainViewModel.isOpening.observe(this){
             it.getContentIfNotHandled()?.let { aLong->
                 handler.postDelayed({ val rootView = findViewById<View>(android.R.id.content)
                     Snackbar.make(rootView, "Mulailah Mencari User", Snackbar.LENGTH_LONG).setDuration(1000).show()
@@ -73,17 +75,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu : Menu) : Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.main_menu, menu)
+        inflater.inflate(R.menu.main_menu , menu)
 
         val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
         val searchView = menu.findItem(R.id.menu_search)?.actionView as SearchView
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.queryHint = resources.getString(R.string.search_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query : String?) : Boolean {
 
-                if (!query.isNullOrEmpty()){
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query : String) : Boolean {
+
+                if (query.isNotEmpty()){
                     mainViewModel.run { githubFindUser(query) }
                 }
 
@@ -95,7 +98,21 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
+
         return true
+    }
+
+    override fun onOptionsItemSelected(item : MenuItem) : Boolean {
+        when(item.itemId) {
+            R.id.menu_favorite -> startActivity(
+                Intent(
+                    this@MainActivity,
+                    FavoriteActivity::class.java
+                )
+            )
+            R.id.menu_theme -> TODO()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setUserData(listUserData : List<ItemsItem>) {
@@ -117,6 +134,5 @@ class MainActivity : AppCompatActivity() {
     private fun isLoading(loading: Boolean) {
         activityMainBinding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
     }
-
 
 }

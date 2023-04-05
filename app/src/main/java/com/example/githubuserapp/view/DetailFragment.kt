@@ -1,4 +1,4 @@
-package com.example.githubuserapp
+package com.example.githubuserapp.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.githubuserapp.R
 import com.example.githubuserapp.adapter.MainAdapterUser
 import com.example.githubuserapp.model.ItemsItem
 import com.example.githubuserapp.viewModel.MainViewModel
@@ -26,7 +27,7 @@ class DetailFragment : Fragment() {
         savedInstanceState : Bundle?
     ) : View? {
 
-        val view = inflater.inflate(R.layout.fragment_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_detail , container , false)
         recyclerView = view.findViewById(R.id.rvDetail)
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         progressBar = view.findViewById(R.id.progressBarDetail)

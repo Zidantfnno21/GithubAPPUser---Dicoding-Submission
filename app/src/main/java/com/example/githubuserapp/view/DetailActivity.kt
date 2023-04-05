@@ -1,12 +1,15 @@
-package com.example.githubuserapp
+package com.example.githubuserapp.view
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.githubuserapp.R
 import com.example.githubuserapp.adapter.SectionsPagerAdapter
 import com.example.githubuserapp.databinding.ActivityDetailBinding
 import com.example.githubuserapp.viewModel.MainViewModel
@@ -21,7 +24,7 @@ class DetailActivity : AppCompatActivity() {
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(
-            R.string.following,
+            R.string.following ,
             R.string.follower
         )
     }
@@ -41,6 +44,19 @@ class DetailActivity : AppCompatActivity() {
             isLoading(it)
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu : Menu) : Boolean {
+        menuInflater.inflate(R.menu.detail_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item : MenuItem) : Boolean {
+        when (item.itemId) {
+            R.id.menu_favorite -> TODO()
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setPagerAdapter(username : String){
@@ -63,8 +79,8 @@ class DetailActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(DetailUserResponse.avatarUrl)
                 .into(activityDetailBinding.ivDetail)
-            activityDetailBinding.tvDetailFollowing.text = getString(R.string.number_following, DetailUserResponse.following)
-            activityDetailBinding.tvDetailFollower.text = getString(R.string.number_follower, DetailUserResponse.followers)
+            activityDetailBinding.tvDetailFollowing.text = getString(R.string.number_following , DetailUserResponse.following)
+            activityDetailBinding.tvDetailFollower.text = getString(R.string.number_follower , DetailUserResponse.followers)
 
         }
     }

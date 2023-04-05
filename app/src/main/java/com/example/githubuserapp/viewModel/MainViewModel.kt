@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.githubuserapp.Event
-import com.example.githubuserapp.api.ApiConfig
+import com.example.githubuserapp.data.remote.api.ApiConfig
 import com.example.githubuserapp.model.DetailUserResponse
 import com.example.githubuserapp.model.GithubResponse
 import com.example.githubuserapp.model.ItemsItem
