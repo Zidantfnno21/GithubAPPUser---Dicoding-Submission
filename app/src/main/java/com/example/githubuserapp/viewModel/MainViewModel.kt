@@ -1,10 +1,12 @@
 package com.example.githubuserapp.viewModel
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.githubuserapp.Event
+import com.example.githubuserapp.data.UserRepository
 import com.example.githubuserapp.data.remote.api.ApiConfig
 import com.example.githubuserapp.model.DetailUserResponse
 import com.example.githubuserapp.model.GithubResponse
@@ -13,7 +15,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val userRepository : UserRepository) : ViewModel() {
+
+    //private val mUserRepository: UserRepository = UserRepository(application)
 
     private val _listUserData = MutableLiveData<List<ItemsItem>>()
     val listUserData: LiveData<List<ItemsItem>> = _listUserData

@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubuserapp.R
-import com.example.githubuserapp.adapter.MainAdapterUser
+import com.example.githubuserapp.view.adapter.MainAdapterUser
 import com.example.githubuserapp.model.ItemsItem
 import com.example.githubuserapp.viewModel.MainViewModel
 import com.google.android.material.snackbar.Snackbar

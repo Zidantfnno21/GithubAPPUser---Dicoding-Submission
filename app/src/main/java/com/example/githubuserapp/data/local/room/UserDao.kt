@@ -7,10 +7,10 @@ import com.example.githubuserapp.data.local.entity.UserEntity
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(users: UserEntity)
+    suspend fun insert(user: UserEntity)
 
     @Delete
-    suspend fun delete(users: UserEntity)
+    suspend fun delete(user: UserEntity)
 
     @Query("SELECT * FROM users WHERE is_favorite = 1")
     fun getFavoriteUsers(): LiveData<List<UserEntity>>

@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".FavoriteActivity"
+            android:name=".view.FavoriteActivity"
+            android:label="Your Favorite"
+            android:parentActivityName=".view.MainActivity"
             android:exported="false" />
         <activity
             android:name=".view.DetailActivity"
