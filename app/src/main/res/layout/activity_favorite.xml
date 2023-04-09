@@ -4,12 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/md_theme_light_surface"
+    android:clipToPadding="false"
     tools:context=".view.FavoriteActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFavorite"
         android:layout_width="match_parent"
+        android:outlineProvider="bounds"
         android:layout_height="match_parent"
+        tools:itemCount="3"
+        tools:listitem="@layout/user_item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +30,7 @@
         android:indeterminateBehavior="cycle"
         android:indeterminateTint="@color/md_theme_light_onPrimaryContainer"
         android:textAlignment="center"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

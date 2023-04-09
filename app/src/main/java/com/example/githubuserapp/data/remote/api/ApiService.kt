@@ -1,36 +1,30 @@
 package com.example.githubuserapp.data.remote.api
 
-import com.example.githubuserapp.model.DetailUserResponse
-import com.example.githubuserapp.model.GithubResponse
-import com.example.githubuserapp.model.ItemsItem
-import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import com.example.githubuserapp.data.model.DetailUserResponse
+import com.example.githubuserapp.data.remote.api.response.GithubResponse
+import retrofit2.http.*
 
 interface ApiService {
 
     @GET("search/users")
-    fun getListUsers(
+    suspend fun getListUsers(
         @Query("q")
         page:String
-    ): Call<GithubResponse>
+    ): GithubResponse
 
     @GET("users/{username}")
-    fun getDetailUser(
+    suspend fun getDetailUser(
         @Path("username")
         username : String
-    ): Call<DetailUserResponse>
+    ): DetailUserResponse
 
     @GET("users/{username}/followers")
-    fun getFollowers(
-        @Path("username")
-        username:String
-    ): Call<List<ItemsItem>>
+    suspend fun getFollowers(
+        @Path("username") username:String
+    ): List<DetailUserResponse>
 
     @GET("users/{username}/following")
-    fun getFollowing(
-        @Path("username")
-        username : String
-    ): Call<List<ItemsItem>>
+    suspend fun getFollowing(
+        @Path("username") username : String
+    ): List<DetailUserResponse>
 }

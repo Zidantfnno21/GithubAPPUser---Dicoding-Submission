@@ -1,4 +1,4 @@
-package com.example.githubuserapp
+package com.example.githubuserapp.utils
 
 open class Event<out T>(private val content: T){
     var hasBeenHandled = false

@@ -1,53 +1,65 @@
 package com.example.githubuserapp.view.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.githubuserapp.R
-import com.example.githubuserapp.model.ItemsItem
+import com.example.githubuserapp.data.model.DetailUserResponse
+import com.example.githubuserapp.databinding.UserItemBinding
 
-class MainAdapterUser(private val userData : List<ItemsItem>) : RecyclerView.Adapter<MainAdapterUser.ViewHolder>(){
-    private lateinit var onItemClickCallback: OnItemClickCallback
+class MainAdapterUser : RecyclerView.Adapter<MainAdapterUser.ViewHolder>(){
 
-    interface OnItemClickCallback {
-        fun onItemClick(data : ItemsItem)
+    companion object {
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<DetailUserResponse> =
+            object : DiffUtil.ItemCallback<DetailUserResponse>() {
+                override fun areItemsTheSame(oldUser: DetailUserResponse, newUser: DetailUserResponse): Boolean {
+                    return oldUser.login == newUser.login
+                }
+
+                @SuppressLint("DiffUtilEquals")
+                override fun areContentsTheSame(oldUser: DetailUserResponse, newUser: DetailUserResponse): Boolean {
+                    return oldUser == newUser
+                }
+            }
     }
 
-    fun setOnItemClickCallBack(onItemClickCallback : OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
-    }
+    val diffBuild = AsyncListDiffer(this, DIFF_CALLBACK)
 
-    class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
-        val tvUser: TextView = itemView.findViewById(R.id.tvUsername)
-        val tvId: TextView = itemView.findViewById(R.id.tvId)
-        val ivUser: ImageView = itemView.findViewById(R.id.circleImageView)
-
-    }
-
-    override fun onCreateViewHolder(parent : ViewGroup , viewType : Int) : ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.user_item , parent , false)
-        return ViewHolder(view)
-    }
-
-
-    override fun onBindViewHolder(holder : ViewHolder , position : Int) {
-        val user = userData[position]
-        holder.tvUser.text = user.login
-        holder.tvId.text = user.id
-        Glide.with(holder.itemView.context)
-            .load(user.avatarUrl)
-            .into(holder.ivUser)
-        holder.itemView.setOnClickListener{
-            onItemClickCallback.onItemClick(userData[holder.adapterPosition])
-
+    inner class ViewHolder(private val binding : UserItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(user : DetailUserResponse) {
+            binding.apply {
+                Glide.with(itemView.context)
+                    .load(user.avatarUrl)
+                    .into(circleImageView)
+                tvUsername.text = user.login
+                tvId.text = user.type
+                itemView.setOnClickListener {
+                    onItemClickListener?.let { it(user) }
+                }
+            }
         }
     }
 
-    override fun getItemCount() : Int = userData.size
+    override fun onCreateViewHolder(parent : ViewGroup , viewType : Int) : ViewHolder {
+        val binding = UserItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
+    }
+
+    override fun getItemCount() : Int = diffBuild.currentList.size
+
+    override fun onBindViewHolder(holder : ViewHolder , position : Int) {
+        holder.bind(diffBuild.currentList[position])
+    }
+
+    private var onItemClickListener: ((DetailUserResponse) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (DetailUserResponse) -> Unit) {
+        onItemClickListener = listener
+    }
+
 }
 
 

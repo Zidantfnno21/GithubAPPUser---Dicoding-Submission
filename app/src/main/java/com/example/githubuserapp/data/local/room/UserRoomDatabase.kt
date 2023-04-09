@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.githubuserapp.data.local.entity.UserEntity
+import com.example.githubuserapp.data.model.DetailUserResponse
 
-@Database(entities = [UserEntity::class], version = 1 , exportSchema = false)
+@Database(entities = [DetailUserResponse::class] , version = 2)
 abstract class UserRoomDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
@@ -19,7 +19,7 @@ abstract class UserRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     UserRoomDatabase::class.java,
                     "likedUsers"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
             }
     }
 }

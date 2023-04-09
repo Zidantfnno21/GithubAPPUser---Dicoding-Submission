@@ -5,22 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubuserapp.R
+import com.example.githubuserapp.data.model.DetailUserResponse
 import com.example.githubuserapp.view.adapter.MainAdapterUser
-import com.example.githubuserapp.model.ItemsItem
-import com.example.githubuserapp.viewModel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.example.githubuserapp.viewModel.DetailViewModel
+import com.example.githubuserapp.viewModel.helper.ViewModelFactory
 
 class DetailFragment : Fragment() {
 
-    private lateinit var mainViewModel : MainViewModel
     private lateinit var recyclerView : RecyclerView
     private lateinit var progressBar : ProgressBar
+    private val detailViewModel by viewModels<DetailViewModel>{
+        ViewModelFactory.getInstance(requireActivity())
+    }
 
     override fun onCreateView(
         inflater : LayoutInflater , container : ViewGroup? ,
@@ -43,60 +44,62 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view : View , savedInstanceState : Bundle?) {
         super.onViewCreated(view , savedInstanceState)
 
+        val username = arguments?.getString(DetailActivity.EXTRA_USERNAME)
         val position = arguments?.getInt(ARG_SECTION_NUMBER)
-        val index = arguments?.getString(ARG_NAME)
-        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         if (position == 1){
-            mainViewModel.giHubGetFollowing(index.toString())
-            mainViewModel.listFollowing.observe(viewLifecycleOwner) { listFollowing ->
-                setUserFollowing(listFollowing)
-            }
+            if (username != null) {
+                detailViewModel.getFollowing(username).observe(viewLifecycleOwner) {result->
+                    if(result != null) {
+                        when(result) {
+                            is com.example.githubuserapp.data.Result.Loading -> {
+                                isLoading(true)
+                            }
+                            is com.example.githubuserapp.data.Result.Success -> {
+                                isLoading(false)
+                                setUserFollowing(result.data)
+                            }
+                            is com.example.githubuserapp.data.Result.Error -> {
 
+                            }
+                        }
+                    }
+                }
+            }
         }else{
-            mainViewModel.gitHubGetFollowers(index.toString())
-            mainViewModel.listFollowers.observe(viewLifecycleOwner) { listFollowers ->
-                setUserFollowers(listFollowers)
+            if (username != null) {
+                detailViewModel.getFollowers(username).observe(viewLifecycleOwner) {result->
+                    if(result != null) {
+                        when(result) {
+                            is com.example.githubuserapp.data.Result.Loading -> {
+                                isLoading(true)
+                            }
+                            is com.example.githubuserapp.data.Result.Success -> {
+                                isLoading(false)
+                                setUserFollowers(result.data)
+                            }
+                            is com.example.githubuserapp.data.Result.Error -> {
+
+                            }
+                        }
+                    }
+                }
             }
         }
-
-        mainViewModel.isLoading.observe(viewLifecycleOwner){
-            isLoading(it)
-        }
-
-        mainViewModel.isNotFound.observe(viewLifecycleOwner){
-            it.getContentIfNotHandled()?.let { text->
-                Snackbar.make(
-                    requireView(),
-                    text,
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
-        }
-
     }
 
-    private fun setUserFollowers(listFollowers : List<ItemsItem>) {
-        val adapter = MainAdapterUser(listFollowers)
+    private fun setUserFollowing(listFollowing : List<DetailUserResponse>) {
+        val adapter = MainAdapterUser()
+        adapter.diffBuild.submitList(listFollowing)
         recyclerView.adapter = adapter
-
-        adapter.setOnItemClickCallBack(object : MainAdapterUser.OnItemClickCallback {
-            override fun onItemClick(data : ItemsItem) {
-                Toast.makeText(context , "You Just Click ^^" , Toast.LENGTH_SHORT).show()
-            }
-        })
+        recyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
-    private fun setUserFollowing(listFollowing : List<ItemsItem>) {
-        val adapter = MainAdapterUser(listFollowing)
+    private fun setUserFollowers(listFollowers : List<DetailUserResponse>) {
+        val adapter = MainAdapterUser()
+        adapter.diffBuild.submitList(listFollowers)
         recyclerView.adapter = adapter
-
-        adapter.setOnItemClickCallBack(object : MainAdapterUser.OnItemClickCallback {
-            override fun onItemClick(data : ItemsItem) {
-                Toast.makeText(context , "You Just Click ^^" , Toast.LENGTH_SHORT).show()
-            }
-        })
-
+        recyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
     private fun isLoading(loading: Boolean) {

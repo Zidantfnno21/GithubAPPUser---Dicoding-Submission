@@ -16,5 +16,4 @@
         android:title="@string/theme_setting"
         android:visible="true"
         app:showAsAction="ifRoom"/>
-
 </menu>

@@ -1,27 +1,37 @@
 package com.example.githubuserapp.view
 
+import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.githubuserapp.R
-import com.example.githubuserapp.view.adapter.SectionsPagerAdapter
+import com.example.githubuserapp.data.model.DetailUserResponse
 import com.example.githubuserapp.databinding.ActivityDetailBinding
-import com.example.githubuserapp.viewModel.MainViewModel
+import com.example.githubuserapp.view.adapter.SectionsPagerAdapter
+import com.example.githubuserapp.viewModel.DetailViewModel
+import com.example.githubuserapp.viewModel.helper.ViewModelFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+
 
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var activityDetailBinding : ActivityDetailBinding
-    private lateinit var mainViewModel : MainViewModel
+    private val detailViewModel by viewModels<DetailViewModel>{
+        ViewModelFactory.getInstance(application)
+    }
 
     companion object {
+        const val EXTRA_USERNAME = "username"
         @StringRes
         private val TAB_TITLES = intArrayOf(
             R.string.following ,
@@ -29,35 +39,49 @@ class DetailActivity : AppCompatActivity() {
         )
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         activityDetailBinding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(activityDetailBinding.root)
 
-        val username = intent.getStringExtra("username")
-        mainViewModel = ViewModelProvider(this,ViewModelProvider.NewInstanceFactory())[MainViewModel::class.java]
+        val username = intent.getStringExtra(EXTRA_USERNAME)
+        val bundle = Bundle()
+        bundle.putString(EXTRA_USERNAME, username)
 
         setPagerAdapter(username!!)
-        detailUsers(username)
 
-        mainViewModel.isLoading.observe(this){
-            isLoading(it)
+        detailViewModel.githubDetailUser(username).observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is com.example.githubuserapp.data.Result.Loading -> {
+                        isLoading(true)
+                    }
+                    is com.example.githubuserapp.data.Result.Success -> {
+                        isLoading(false)
+                        if(result.data.favorite){
+                            //activityDetailBinding.btAddFavorite.background = ContextCompat.getDrawable(applicationContext, R.drawable.button_filled)
+                            activityDetailBinding.btAddFavorite.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext, R.color.md_theme_light_error))
+                            activityDetailBinding.btAddFavorite.text = "Remove Favorito"
+                        }else{
+                            //activityDetailBinding.btAddFavorite.background = ContextCompat.getDrawable(applicationContext, R.drawable.button_border)
+                            activityDetailBinding.btAddFavorite.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext, R.color.md_theme_light_primary))
+                            activityDetailBinding.btAddFavorite.text = "Add to Favorito"
+                        }
+                        setUserData(result.data)
+                    }
+                    is com.example.githubuserapp.data.Result.Error -> {
+                        isLoading(false)
+                        Log.e(TAG , result.error)
+                        Toast.makeText(
+                            this@DetailActivity , "Cannot Retreive" , Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
         }
-
     }
 
-    override fun onCreateOptionsMenu(menu : Menu) : Boolean {
-        menuInflater.inflate(R.menu.detail_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item : MenuItem) : Boolean {
-        when (item.itemId) {
-            R.id.menu_favorite -> TODO()
-
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     private fun setPagerAdapter(username : String){
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
@@ -71,18 +95,35 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    private fun detailUsers(username : String) {
-        mainViewModel.gitHubDetailUser(username)
-        mainViewModel.detailDataUsers.observe(this) { DetailUserResponse ->
-            activityDetailBinding.tvDetailId.text = DetailUserResponse.name
-            activityDetailBinding.tvDetailUsername.text = DetailUserResponse.login
-            Glide.with(this)
-                .load(DetailUserResponse.avatarUrl)
-                .into(activityDetailBinding.ivDetail)
-            activityDetailBinding.tvDetailFollowing.text = getString(R.string.number_following , DetailUserResponse.following)
-            activityDetailBinding.tvDetailFollower.text = getString(R.string.number_follower , DetailUserResponse.followers)
+    @SuppressLint("SetTextI18n")
+    private fun setUserData(userResponse : DetailUserResponse) {
+       activityDetailBinding.apply {
+           tvDetailId.text = userResponse.name
+           tvDetailUsername.text = userResponse.login
+           Glide.with(this@DetailActivity)
+               .load(userResponse.avatarUrl)
+               .into(ivDetail)
+           tvDetailFollowing.text = getString(R.string.number_following, userResponse.following)
+           tvDetailFollower.text = getString(R.string.number_follower, userResponse.followers)
 
-        }
+           btAddFavorite.setOnClickListener {
+                if (userResponse.favorite){
+                    detailViewModel.removeFavorite(userResponse.login)
+                    Toast.makeText(
+                        this@DetailActivity ,
+                        "User ${userResponse.login} Removed From Favorito" ,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }else{
+                    detailViewModel.addFavorite(userResponse.login)
+                    Toast.makeText(
+                        this@DetailActivity ,
+                        "User ${userResponse.login} Added to Favorito" ,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+           }
+       }
     }
 
     private fun isLoading(loading: Boolean) {
