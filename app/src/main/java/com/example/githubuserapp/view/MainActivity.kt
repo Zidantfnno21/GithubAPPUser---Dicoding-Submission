@@ -2,13 +2,13 @@ package com.example.githubuserapp.view
 
 import android.app.SearchManager
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
@@ -17,8 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuserapp.R
 import com.example.githubuserapp.data.Result
-import com.example.githubuserapp.view.adapter.MainAdapterUser
 import com.example.githubuserapp.databinding.ActivityMainBinding
+import com.example.githubuserapp.view.adapter.MainAdapterUser
 import com.example.githubuserapp.viewModel.MainViewModel
 import com.example.githubuserapp.viewModel.helper.ViewModelFactory
 import kotlinx.coroutines.cancel
@@ -139,6 +139,11 @@ class MainActivity : AppCompatActivity() {
                         isLoading(false)
                         val userData = result.data
                         adapterUser.diffBuild.submitList(userData)
+                        if (userData.isNullOrEmpty()) {
+                            activityMainBinding.imageView.visibility = View.VISIBLE
+                        }else{
+                            activityMainBinding.imageView.visibility = View.GONE
+                        }
                     }
                     is Result.Error -> {
                         activityMainBinding.progressBar.visibility = View.GONE
@@ -147,6 +152,7 @@ class MainActivity : AppCompatActivity() {
                             "Terjadi kesalahan" ,
                             Toast.LENGTH_SHORT
                         ).show()
+                        activityMainBinding.imageView.visibility = View.VISIBLE
                     }
                 }
             }
@@ -158,7 +164,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        // Cancel the coroutine to stop observing changes in the data store
         lifecycleScope.cancel()
         super.onDestroy()
     }

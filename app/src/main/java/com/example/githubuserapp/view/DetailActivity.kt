@@ -2,6 +2,7 @@ package com.example.githubuserapp.view
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -49,36 +50,48 @@ class DetailActivity : AppCompatActivity() {
         val bundle = Bundle()
         bundle.putString(EXTRA_USERNAME, username)
 
-        setPagerAdapter(username!!)
+        supportActionBar?.title = username
+        supportActionBar?.elevation = 0f
 
-        detailViewModel.githubDetailUser(username).observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is com.example.githubuserapp.data.Result.Loading -> {
-                        isLoading(true)
-                    }
-                    is com.example.githubuserapp.data.Result.Success -> {
-                        isLoading(false)
-                        if(result.data.favorite){
-                            //activityDetailBinding.btAddFavorite.background = ContextCompat.getDrawable(applicationContext, R.drawable.button_filled)
-                            activityDetailBinding.btAddFavorite.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext, R.color.md_theme_light_error))
-                            activityDetailBinding.btAddFavorite.text = "Remove Favorito"
-                        }else{
-                            //activityDetailBinding.btAddFavorite.background = ContextCompat.getDrawable(applicationContext, R.drawable.button_border)
-                            activityDetailBinding.btAddFavorite.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext, R.color.md_theme_light_primary))
-                            activityDetailBinding.btAddFavorite.text = "Add to Favorito"
+        if (username != null) {
+            setPagerAdapter(username)
+            detailViewModel.githubDetailUser(username).observe(this) { result ->
+                if (result != null) {
+                    when (result) {
+                        is com.example.githubuserapp.data.Result.Loading -> {
+                            isLoading(true)
                         }
-                        setUserData(result.data)
-                    }
-                    is com.example.githubuserapp.data.Result.Error -> {
-                        isLoading(false)
-                        Log.e(TAG , result.error)
-                        Toast.makeText(
-                            this@DetailActivity , "Cannot Retreive" , Toast.LENGTH_SHORT
-                        ).show()
+                        is com.example.githubuserapp.data.Result.Success -> {
+                            isLoading(false)
+                            if(result.data.favorite){
+                                //activityDetailBinding.btAddFavorite.background = ContextCompat.getDrawable(applicationContext, R.drawable.button_filled)
+                                activityDetailBinding.btAddFavorite.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext, R.color.md_theme_dark_onTertiary))
+                                activityDetailBinding.btAddFavorite.text = "Remove Favorito"
+                            }else{
+                                //activityDetailBinding.btAddFavorite.background = ContextCompat.getDrawable(applicationContext, R.drawable.button_border)
+                                activityDetailBinding.btAddFavorite.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext, R.color.md_theme_dark_primaryContainer))
+                                activityDetailBinding.btAddFavorite.text = "Add to Favorito"
+                            }
+                            setUserData(result.data)
+                        }
+                        is com.example.githubuserapp.data.Result.Error -> {
+                            isLoading(false)
+                            Log.e(TAG , result.error)
+                            Toast.makeText(
+                                this@DetailActivity , "Cannot Retreive" , Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             }
+        }
+
+        activityDetailBinding.floatingActionButton.setOnClickListener {
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT, "https://github.com/$username")
+            intent.type = "text/plain"
+            startActivity(Intent.createChooser(intent, "Share To:"))
         }
     }
 
@@ -98,7 +111,11 @@ class DetailActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun setUserData(userResponse : DetailUserResponse) {
        activityDetailBinding.apply {
-           tvDetailId.text = userResponse.name
+           if (userResponse.name.isNullOrBlank()){
+               tvDetailId.text = userResponse.login
+           }else{
+               tvDetailId.text = userResponse.name
+           }
            tvDetailUsername.text = userResponse.login
            Glide.with(this@DetailActivity)
                .load(userResponse.avatarUrl)

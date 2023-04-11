@@ -4,21 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.githubuserapp.R
 import com.example.githubuserapp.data.model.DetailUserResponse
+import com.example.githubuserapp.databinding.FragmentDetailBinding
 import com.example.githubuserapp.view.adapter.MainAdapterUser
 import com.example.githubuserapp.viewModel.DetailViewModel
 import com.example.githubuserapp.viewModel.helper.ViewModelFactory
 
 class DetailFragment : Fragment() {
 
-    private lateinit var recyclerView : RecyclerView
-    private lateinit var progressBar : ProgressBar
+    private lateinit var binding : FragmentDetailBinding
     private val detailViewModel by viewModels<DetailViewModel>{
         ViewModelFactory.getInstance(requireActivity())
     }
@@ -26,14 +23,10 @@ class DetailFragment : Fragment() {
     override fun onCreateView(
         inflater : LayoutInflater , container : ViewGroup? ,
         savedInstanceState : Bundle?
-    ) : View? {
+    ) : View {
+        binding = FragmentDetailBinding.inflate(inflater, container, false)
 
-        val view = inflater.inflate(R.layout.fragment_detail , container , false)
-        recyclerView = view.findViewById(R.id.rvDetail)
-        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        progressBar = view.findViewById(R.id.progressBarDetail)
-
-        return view
+        return binding.root
     }
 
     companion object{
@@ -90,19 +83,21 @@ class DetailFragment : Fragment() {
 
     private fun setUserFollowing(listFollowing : List<DetailUserResponse>) {
         val adapter = MainAdapterUser()
+        if(listFollowing.isNullOrEmpty()) binding.imageView.visibility = View.VISIBLE else View.GONE
         adapter.diffBuild.submitList(listFollowing)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.rvDetail.adapter = adapter
+        binding.rvDetail.layoutManager = LinearLayoutManager(activity)
     }
 
     private fun setUserFollowers(listFollowers : List<DetailUserResponse>) {
         val adapter = MainAdapterUser()
+        if(listFollowers.isNullOrEmpty()) binding.imageView.visibility = View.VISIBLE else View.GONE
         adapter.diffBuild.submitList(listFollowers)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.rvDetail.adapter = adapter
+        binding.rvDetail.layoutManager = LinearLayoutManager(activity)
     }
 
     private fun isLoading(loading: Boolean) {
-            progressBar.visibility = if(loading) View.VISIBLE else View.GONE
+        binding.progressBarDetail.visibility = if (loading) View.VISIBLE else View.GONE
     }
 }

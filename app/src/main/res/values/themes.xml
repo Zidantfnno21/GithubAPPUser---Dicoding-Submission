@@ -38,6 +38,7 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
         <!-- Required for animated icons -->
         <item name="windowSplashScreenAnimationDuration">500</item>
+        <item name="android:windowSplashScreenBrandingImage">@string/hello_blank_fragment</item>
 
         <!-- Set the theme of the Activity that directly follows your splash screen. -->
         <!-- Required -->

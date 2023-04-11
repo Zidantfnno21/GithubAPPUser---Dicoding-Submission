@@ -23,9 +23,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="12dp"
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -42,7 +41,7 @@
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginVertical="10dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:backgroundTint="@color/md_theme_dark_primaryContainer"
                     android:clickable="true"
                     android:fontFamily="sans-serif-medium"
@@ -51,7 +50,7 @@
                     android:minHeight="36dp"
                     android:padding="9dp"
                     android:text="@string/favorite"
-                    android:textColor="@color/md_theme_light_surface"
+                    android:textColor="@color/md_theme_dark_inverseSurface"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -61,20 +60,20 @@
                 android:id="@+id/tvDetailUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="16dp"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/follower"
-                android:textColor="@color/md_theme_light_inverseSurface"
+                android:textColor="@color/md_theme_dark_inverseSurface"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvDetailId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="16dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/follower"
-                android:textColor="@color/md_theme_light_inverseSurface"
+                android:textColor="@color/md_theme_dark_inverseSurface"
                 android:textSize="12sp" />
 
             <LinearLayout
@@ -90,7 +89,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/follower"
-                    android:textColor="@color/md_theme_light_inverseSurface"
+                    android:textColor="@color/md_theme_dark_inverseSurface"
                     android:textSize="16sp" />
 
                 <TextView
@@ -100,7 +99,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/following"
-                    android:textColor="@color/md_theme_light_inverseSurface"
+                    android:textColor="@color/md_theme_dark_inverseSurface"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -108,13 +107,13 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/md_theme_light_surface"
+                android:backgroundTint="@color/md_theme_dark_background"
                 android:elevation="0dp"
                 android:theme="@style/Theme.Material3.Dark"
-                app:tabIndicatorColor="@color/md_theme_light_inverseSurface"
+                app:tabIndicatorColor="@color/md_theme_dark_inverseSurface"
                 app:tabRippleColor="@null"
-                app:tabSelectedTextColor="@color/md_theme_light_inverseSurface"
-                app:tabTextColor="@color/md_theme_light_onSurfaceVariant">
+                app:tabSelectedTextColor="@color/md_theme_dark_inverseSurface"
+                app:tabTextColor="@color/md_theme_dark_onSurfaceVariant">
 
             </com.google.android.material.tabs.TabLayout>
 
@@ -134,8 +133,8 @@
         android:layout_margin="16dp"
         android:text="@string/share_user"
         android:clickable="true"
-        android:backgroundTint="@color/md_theme_light_primaryContainer"
-        android:textColor="@color/md_theme_light_inverseSurface"
+        android:backgroundTint="@color/md_theme_dark_primaryContainer"
+        android:textColor="@color/md_theme_dark_inverseSurface"
         android:contentDescription="@string/share_users"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +147,7 @@
         android:layout_gravity="center_horizontal"
         android:contextClickable="false"
         android:indeterminate="true"
-        android:indeterminateTint="@color/md_theme_light_inverseSurface"
+        android:indeterminateTint="@color/md_theme_dark_inverseSurface"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/activity_main"

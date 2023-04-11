@@ -10,14 +10,16 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFavorite"
         android:layout_width="match_parent"
-        android:outlineProvider="bounds"
         android:layout_height="match_parent"
-        tools:itemCount="3"
-        tools:listitem="@layout/user_item"
+        android:outlineProvider="bounds"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:itemCount="3"
+        tools:listitem="@layout/user_item" />
 
     <ProgressBar
         android:id="@+id/progressBar2"
@@ -27,7 +29,7 @@
         android:contextClickable="false"
         android:indeterminate="true"
         android:indeterminateBehavior="cycle"
-        android:indeterminateTint="@color/md_theme_light_inverseSurface"
+        android:indeterminateTint="@color/md_theme_dark_inverseSurface"
         android:textAlignment="center"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

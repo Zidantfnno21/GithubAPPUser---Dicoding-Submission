@@ -3,31 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:theme="@style/Theme.Material3.DayNight"
-    tools:context=".view.FavoriteActivity">
+    android:layout_height="match_parent"
+    tools:context=".view.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFavorite"
+        android:id="@+id/rvMain"
         android:layout_width="match_parent"
-        android:outlineProvider="bounds"
         android:layout_height="match_parent"
-        tools:itemCount="3"
-        tools:listitem="@layout/user_item"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:elevation="0dp"
+        tools:listitem="@layout/user_item" />
 
     <ProgressBar
-        android:id="@+id/progressBar2"
+        android:id="@+id/progressBar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="160dp"
         android:layout_height="30dp"
         android:contextClickable="false"
         android:indeterminate="true"
         android:indeterminateBehavior="cycle"
-        android:indeterminateTint="@color/md_theme_light_inverseSurface"
+        android:indeterminateTint="@color/md_theme_dark_inverseSurface"
         android:textAlignment="center"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -46,4 +41,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,6 +30,7 @@ class FavoriteActivity : AppCompatActivity() {
 
         favoriteViewModel.getUserFavorite().observe(this@FavoriteActivity) { result->
             binding.progressBar2.visibility = View.GONE
+            if (result.isEmpty()) binding.imageView.visibility = View.VISIBLE
             userAdapter.diffBuild.submitList(result)
         }
 
